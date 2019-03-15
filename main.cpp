@@ -7,8 +7,8 @@
 //   Arduino Pin 11 is connected to one end of a  1k resistor,
 //     the other end of the 1k resistor is connected to RX of the JQ6500
 //   If your Arduino is 3v3 powered, you can omit the 1k series resistor
-#define ARDUINO_RX_JQ6500_TX 8
-#define ARDUINO_TX_JQ6500_RX 11
+#define ARDUINO_RX_JQ6500_TX 11
+#define ARDUINO_TX_JQ6500_RX 8
 JQ6500_Serial mp3(ARDUINO_RX_JQ6500_TX, ARDUINO_TX_JQ6500_RX);
 
 #define CHOICE_OFF      0 //Used to control LEDs
@@ -366,4 +366,3 @@ void attractMode(void) {
 			return;
 	}
 }
-
