@@ -81,6 +81,8 @@ void setup() {
 	mp3.setVolume(20);
 	//don't loop by default
 	mp3.setLoopMode(MP3_LOOP_NONE);
+	Serial.println("Number of files in BUILTIN source: " + String(mp3.countFiles(MP3_SRC_BUILTIN)));
+	Serial.println("Number of files in SD source: " + String(mp3.countFiles(MP3_SRC_SDCARD)));
 	//select source: built-in memory
 	//mp3.setSource(MP3_SRC_BUILTIN);
 	//or from SD card
