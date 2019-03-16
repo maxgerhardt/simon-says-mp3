@@ -354,6 +354,7 @@ void play_loser(void) {
 	delay(500);
 	setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
 	delay(500);
+	wait_for_end_of_sound();
 	Serial.println("End of loser sound");
 }
 
