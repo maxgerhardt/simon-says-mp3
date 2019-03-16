@@ -301,19 +301,30 @@ void play_winner(void) {
 	winner_sound();
 }
 
+void wait_for_end_of_sound() {
+	int status = MP3_STATUS_PLAYING;
+	do {
+		int status = (int) mp3.getStatus();
+		String szStatus = "";
+		switch(status){
+			case MP3_STATUS_STOPPED: szStatus = "MP3_STATUS_STOPPED"; break;
+			case MP3_STATUS_PLAYING: szStatus = "MP3_STATUS_PLAYING"; break;
+			case MP3_STATUS_PAUSED: szStatus = "MP3_STATUS_PAUSED"; break;
+			default: szStatus = "Unknown state " + String(status); break;
+		}
+		Serial.println("Status: " + szStatus);
+	} while(status == MP3_STATUS_PLAYING);
+}
+
 // Play the winner sound
 // This is just a unique (annoying) sound we came up with, there is no magic to it
 void winner_sound(void) {
 	//trigger playing sound 1
 	Serial.println("Triggered winner sound");
-	mp3.playFileByIndexNumber(1);
+	mp3.playFileByIndexNumber(2);
 	delay(200); //wait a little bit so file starts playing
 	//block execution until file is done playing
-	while(mp3.getStatus() == MP3_STATUS_PLAYING) {
-		//wait
-		delay(250);
-		Serial.println("Waiting for end of winner sound..");
-	}
+	wait_for_end_of_sound();
 	//if we reach here, then the status is not "playing" anymore
 	//i.e., STOPPED or PAUSED
 	Serial.println("End of winner sound");
@@ -322,12 +333,9 @@ void winner_sound(void) {
 void looser_sound() {
 	//trigger playing sound 2
 	Serial.println("Triggered loser sound");
-	mp3.playFileByIndexNumber(2);
+	mp3.playFileByIndexNumber(1);
 	delay(200);
-	while(mp3.getStatus() == MP3_STATUS_PLAYING) {
-		delay(250);
-		Serial.println("Waiting for end of loser sound..");
-	}
+	wait_for_end_of_sound();
 	Serial.println("End of loser sound");
 }
 
