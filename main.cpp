@@ -304,7 +304,7 @@ void play_winner(void) {
 void wait_for_end_of_sound() {
 	int status = MP3_STATUS_PLAYING;
 	do {
-		int status = (int) mp3.getStatus();
+		status = (int) mp3.getStatus();
 		String szStatus = "";
 		switch(status){
 			case MP3_STATUS_STOPPED: szStatus = "MP3_STATUS_STOPPED"; break;
