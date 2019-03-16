@@ -289,18 +289,6 @@ void buzz_sound(int buzz_length_ms, int buzz_delay_us) {
 
 }
 
-// Play the winner sound and lights
-void play_winner(void) {
-	setLEDs(CHOICE_GREEN | CHOICE_BLUE);
-	winner_sound();
-	setLEDs(CHOICE_RED | CHOICE_YELLOW);
-	winner_sound();
-	setLEDs(CHOICE_GREEN | CHOICE_BLUE);
-	winner_sound();
-	setLEDs(CHOICE_RED | CHOICE_YELLOW);
-	winner_sound();
-}
-
 void wait_for_end_of_sound() {
 	int status = MP3_STATUS_PLAYING;
 	do {
@@ -316,13 +304,19 @@ void wait_for_end_of_sound() {
 	} while(status == MP3_STATUS_PLAYING);
 }
 
-// Play the winner sound
-// This is just a unique (annoying) sound we came up with, there is no magic to it
-void winner_sound(void) {
-	//trigger playing sound 1
-	Serial.println("Triggered winner sound");
-	mp3.playFileByIndexNumber(2);
-	delay(200); //wait a little bit so file starts playing
+// Play the winner sound and lights
+void play_winner(void) {
+	//start playing sound but don't block
+	//until it's done playing
+	winner_sound();
+	setLEDs(CHOICE_GREEN | CHOICE_BLUE);
+	delay(500);
+	setLEDs(CHOICE_RED | CHOICE_YELLOW);
+	delay(500);
+	setLEDs(CHOICE_GREEN | CHOICE_BLUE);
+	delay(500);
+	setLEDs(CHOICE_RED | CHOICE_YELLOW);
+	delay(500);
 	//block execution until file is done playing
 	wait_for_end_of_sound();
 	//if we reach here, then the status is not "playing" anymore
@@ -330,26 +324,37 @@ void winner_sound(void) {
 	Serial.println("End of winner sound");
 }
 
-void looser_sound() {
+// Play the winner sound
+// This is just a unique (annoying) sound we came up with, there is no magic to it
+void winner_sound(void) {
 	//trigger playing sound 2
+	Serial.println("Triggered winner sound");
+	mp3.playFileByIndexNumber(2);
+	delay(200); //wait a little bit so file starts playing
+	//wait end of playback later
+}
+
+void looser_sound() {
+	//trigger playing sound 1
 	Serial.println("Triggered loser sound");
 	mp3.playFileByIndexNumber(1);
 	delay(200);
-	wait_for_end_of_sound();
-	Serial.println("End of loser sound");
 }
 
 // Play the loser sound/lights
 void play_loser(void) {
 	//"loop" 3 times
 	//just 3 times in series with delays, actually ;)
-	setLEDs(CHOICE_RED | CHOICE_GREEN);
-	looser_sound();
-	setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
 	looser_sound();
 	setLEDs(CHOICE_RED | CHOICE_GREEN);
-	looser_sound();
+	delay(500);
 	setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
+	delay(500);
+	setLEDs(CHOICE_RED | CHOICE_GREEN);
+	delay(500);
+	setLEDs(CHOICE_BLUE | CHOICE_YELLOW);
+	delay(500);
+	Serial.println("End of loser sound");
 }
 
 // Show an "attract mode" display while waiting for user to press button.
